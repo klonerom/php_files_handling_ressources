@@ -20,3 +20,18 @@ strong{
 .navbar-brand{
     height: auto;
 }
+
+.niv1 {
+    /*margin-left: 10px;*/
+    color: #2a9fd6;
+}
+
+.niv2 {
+    /*margin-left: 20px;*/
+    color: #9933cc;
+}
+
+.niv3 {
+    /*margin-left: 30px;*/
+    color: #a85a00;
+}
