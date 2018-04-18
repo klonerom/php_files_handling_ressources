@@ -9,45 +9,49 @@
         function searchFiles($dir) {
             $result = array();
 
-            $scdir = scandir($dir);
+            if(is_dir($dir)) {//test si dossier non vide (sinon warning php)
 
-            foreach ($scdir as $key => $value) {
+                $scdir = scandir($dir);
 
-                if (!in_array($value,array(".",".."))) {
-                    $chemin = $dir . DIRECTORY_SEPARATOR . $value;
-                    //test si dossier alors on relance la fonction
-                    if (is_dir($chemin)) {
-                        //$chemin = $dir . DIRECTORY_SEPARATOR . $value;
-                        //si Get alors suppression folder
-                        if (isset($_GET)) {
-                            foreach ($_GET as $valueGet) {
-                                if ($valueGet == $chemin) {
-                                    shell_exec('rm -rf ' . realpath($dir . DIRECTORY_SEPARATOR . $value)); // On efface
-                                    header('Location:/');
-                                    die;
+                foreach ($scdir as $key => $value) {
+
+                    if (!in_array($value, array(".", ".."))) {
+                        $chemin = $dir.DIRECTORY_SEPARATOR.$value;
+                        //test si dossier alors on relance la fonction
+                        if (is_dir($chemin)) {
+                            //$chemin = $dir . DIRECTORY_SEPARATOR . $value;
+                            //si Get alors suppression folder
+                            if (isset($_GET)) {
+                                foreach ($_GET as $valueGet) {
+                                    if ($valueGet == $chemin) {
+                                        shell_exec('rm -rf '.realpath($dir.DIRECTORY_SEPARATOR.$value)); // On efface
+                                        header('Location:/');
+                                        die;
+                                    }
                                 }
                             }
-                        }
 
-                        $result[$chemin] = searchFiles($chemin);
-                    } else {
-                        //si Get alors suppression file
-                        if (isset($_GET)) {
-                            foreach ($_GET as $valueGet) {
-                                if ($valueGet == $chemin) {
-                                    unlink($dir . DIRECTORY_SEPARATOR . $value); // On efface
-                                    header('Location:/');
-                                    die;
+                            $result[$chemin] = searchFiles($chemin);
+                        } else {
+                            //si Get alors suppression file
+                            if (isset($_GET)) {
+                                foreach ($_GET as $valueGet) {
+                                    if ($valueGet == $chemin) {
+                                        unlink($dir.DIRECTORY_SEPARATOR.$value); // On efface
+                                        header('Location:/');
+                                        die;
+                                    }
                                 }
                             }
+
+
+                            $result[] = $chemin;
                         }
-
-
-                        $result[] = $chemin;
                     }
                 }
+            } else {
+                echo 'No X-files - The truth is out there !';
             }
-
             return $result;
         }
 
@@ -63,14 +67,14 @@
                 //si une valeur alors on a un sous fichier ou sous dossier
                 if (is_array($value)) {
 
-                    echo '<li class="folder'.$i.'"><a href ="?dir=' . $key . '" class="btn btn-default btn-xs">X</a> [' . $keyName . ']</li>';
+                    echo '<li class="folder'.$i.'"><a href ="?dir=' . $key . '"><i class="fa fa-times fa-xs"></i></a>&nbsp;&nbsp;<i id="minus" class="far fa-minus-square"></i>&nbsp;&nbsp;<i class="fas fa-folder"></i>&nbsp;' . $keyName . '</li>';
 
                     //on relance la fonction pour définir les élements constituant les niveaux inférieurs
                     afficher_tablo($value, $i);
 
                 } else { //pas de niv inférieur, on affiche le resultat
                     $valueName = basename($value);
-                    echo '<li class="file'.$i.'"><a href ="?file=' . $value . '" class="btn btn-default btn-xs">X</a> ' . $valueName . '</li>';
+                    echo '<li class="file'.$i.'"><a href ="?file=' . $value . '"><i class="fa fa-times fa-xs"></i></a>&nbsp;&nbsp;<i class="far fa-file-excel"></i>&nbsp; ' . $valueName . '</li>';
                 }
             }
             echo '</ul>';
@@ -83,50 +87,16 @@
 
      $(document).ready(function(){
 
-        // $('.niv0').click(function() {
-        //    $('.niv1').slideToggle( 'slow' );
-        //    $('.niv2').slideToggle( 'slow' );
-        // });
-        //
-        // $('.niv2').click(function() {
-        //     $('.niv2').slideToggle( 'slow' );
-        // });
-
-        // $('.niv0').click(function() {
-        //     $('ul.niv1 > li').slideToggle( 'slow' );
-        //     $('ul.niv2 > li').slideToggle( 'slow' );
-        // });
-
-        // $('.niv1').click(function() {
-        //     $('li.file2, li.file3').slideToggle( 'slow' );
-        // });
-
-        //
         $('li.folder0').click(function() {
-            //$('li.file2').slideUp( 'slow' );
             $(this).next().slideToggle( 'slow' );
+            $(this).find('#minus').toggleClass('fa-plus-square fa-minus-square');
         });
+
          $('li.folder1').click(function() {
-             //$('li.file2').slideUp( 'slow' );
              $(this).next().slideToggle( 'slow' );
+             $(this).find('#minus').toggleClass('fa-plus-square fa-minus-square');
          });
 
-         // $( 'file1 > li > a' ).on( 'click', function( event ) {
-         //     var
-         //         element = $( this ),
-         //         ul = element.next( "ul" ),
-         //         count = ul.length;
-         //
-         //     $( "file1 > li > ul" ).slideUp();
-         //
-         //     if( count > 0 && !ul.is( ":visible" ) ) {
-         //         ul.slideDown();
-         //
-         //         event.preventDefault();
-         //     } else {
-         //         ul.slideUp();
-         //     }
-         // } );
      });
 </script>
 
