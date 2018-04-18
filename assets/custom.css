@@ -21,6 +21,14 @@ strong{
     height: auto;
 }
 
+ul li {
+
+}
+li {
+    list-style: none;
+    /*margin-left: 20px;*!*/
+}
+
 .niv1 {
     /*margin-left: 10px;*/
     color: #2a9fd6;
