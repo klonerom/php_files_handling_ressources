@@ -5,6 +5,7 @@
     <title>FBI | X-Files archives</title>
     <link rel="stylesheet" href="assets/bootstrap.css"/>
     <link rel="stylesheet" href="assets/custom.css"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </head>
 <body>
 <nav class="navbar navbar-default">
