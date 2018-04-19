@@ -4,7 +4,7 @@
         <?php
 
         $files = searchFiles("files"); //on stocke dans un array tous les folders et files
-        afficher_tablo($files); //affichage des fichiers
+        displayTree($files); //affichage des fichiers
 
         /**
          * @param $dir dossier de référence
@@ -59,11 +59,14 @@
         }
 
 
-
-        function afficher_tablo($tableau, $i = -1) { //tableau contient les chemins des éléments
+        /**
+         * @param $tree liste des dossiers et fichiers contenu dans le dossier d'origine
+         * @param int $i niveau dans l'arborescence (0 niveau de base, 1 pour suivant ...)
+         */
+        function displayTree($tree, $i = -1) { //tableau contient les chemins des éléments
             $i++;
             echo '<ul class="niv'.$i.'">';
-            foreach ($tableau as $key => $value) {
+            foreach ($tree as $key => $value) {
 
                 $keyName = basename($key);//on ne recupere que le nom+format du chemin
 
@@ -73,7 +76,7 @@
                     echo '<li class="folder'.$i.'"><form action="" method="POST"><input type="hidden" name="cheminFolder" value="' . $key . '" /><button class="btn btn-delete btn-xs" type="submit" name="submit"><i class="fa fa-times fa-xs"></i></button></form>&nbsp;&nbsp;<i id="minus" class="far fa-minus-square"></i>&nbsp;&nbsp;<i class="fas fa-folder"></i>&nbsp;' . $keyName . '</li>';
 
                     //on relance la fonction pour définir les élements constituant les niveaux inférieurs
-                    afficher_tablo($value, $i);
+                    displayTree($value, $i);
 
                 } else { //pas de niv inférieur, on affiche le resultat
                     $valueName = basename($value);
@@ -90,12 +93,12 @@
 <script>
 
      $(document).ready(function(){
-
+         //animation tree
         $('li.folder0').click(function() {
             $(this).next().slideToggle( 'slow' );
             $(this).find('#minus').toggleClass('fa-plus-square fa-minus-square');
         });
-
+         //animation tree
          $('li.folder1').click(function() {
              $(this).next().slideToggle( 'slow' );
              $(this).find('#minus').toggleClass('fa-plus-square fa-minus-square');
