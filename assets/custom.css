@@ -43,3 +43,12 @@ li {
 .fa-times {
     color: #a84a43;
 }
+
+.btn-delete {
+    float: left;
+    background-color: #222;
+    border: none;
+}
+li.clear {
+    clear: both;
+}
